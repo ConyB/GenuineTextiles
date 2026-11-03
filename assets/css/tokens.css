@@ -1,0 +1,40 @@
+/* Genuine Textiles visual tokens from UI_UX_SYSTEM.md. */
+:root {
+  --brand-blue: #2E3192;
+  --brand-red: #E81820;
+  --brand-blue-dark: #22256F;
+  --brand-blue-tint: #ECEDF8;
+  --success: #1E8E4E;
+  --success-tint: rgba(30, 142, 78, .10);
+  --warning: #E8A300;
+  --warning-tint: rgba(232, 163, 0, .10);
+  --error: #C62828;
+  --error-tint: rgba(198, 40, 40, .10);
+  --info: #2E7DD1;
+  --info-tint: rgba(46, 125, 209, .10);
+  --neutral-tint: rgba(102, 112, 133, .10);
+  --text: #1F2430;
+  --muted: #667085;
+  --border: #DDE0EA;
+  --page-bg: #F5F6FA;
+  --surface: #FFFFFF;
+  --scrollbar-thumb: #B8BECC;
+  --scrollbar-thumb-hover: #98A1B3;
+  --scrollbar-thumb-on-dark: rgba(255, 255, 255, .36);
+  --scrollbar-thumb-on-dark-hover: rgba(255, 255, 255, .62);
+  --font-sans: Inter, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --sidebar-width: 260px;
+  --sidebar-item-text: rgba(255, 255, 255, .85);
+  --sidebar-item-hover: rgba(255, 255, 255, .08);
+  --sidebar-item-active: rgba(255, 255, 255, .14);
+  --sidebar-item-focus: #FFFFFF;
+  --sidebar-item-accent: var(--brand-red);
+  --topbar-height: 64px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --radius: 8px;
+  --shadow: 0 2px 8px rgba(31, 36, 48, .08);
+}

@@ -1,0 +1,17 @@
+/* Shared report content and A4 table treatment. List controls remain in shared components. */
+.report-statement-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:16px 0; }
+.report-statement-grid .detail-card { margin:0; min-width:0; }
+.report-line-list { list-style:none; margin:0; padding:0; }
+.report-line-list li { display:flex; justify-content:space-between; align-items:start; gap:16px; padding:9px 0; border-bottom:1px solid var(--border); }
+.report-line-list strong { white-space:nowrap; text-align:right; }
+.report-line-total { font-weight:700; }
+.report-note { color:var(--muted); }
+.report-check-ok { color:var(--success); font-weight:600; }
+.report-check-fail { color:var(--error); font-weight:600; }
+.report-print-table { width:100%; border-collapse:collapse; margin:12px 0 20px; font-size:11px; }
+.report-print-table th,.report-print-table td { border:1px solid #cfd3df; padding:6px 7px; overflow-wrap:anywhere; }
+.report-print-table thead { display:table-header-group; }
+.report-print-table tr { break-inside:avoid; }
+.report-print-total { font-weight:700; text-align:right; break-inside:avoid; }
+.print-page .report-number { white-space:nowrap; text-align:right; overflow-wrap:normal; }
+@media (max-width:767px) { .report-statement-grid { grid-template-columns:1fr; } .report-line-list li { flex-wrap:wrap; } }

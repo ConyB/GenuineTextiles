@@ -1,0 +1,2 @@
+/* The documented Bootstrap 5 stylesheet is kept local so screens render without a CDN connection. */
+@import url('./bootstrap.min.css');

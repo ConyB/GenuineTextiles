@@ -1,0 +1,35 @@
+/* Shared document line editor; modules provide only columns and business validation. */
+.line-editor { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.line-editor-scroll { overflow-x: auto; }
+.line-editor table { border-collapse: collapse; min-width: 760px; width: 100%; }
+.line-editor th { background: var(--brand-blue-tint); font-size: 12px; text-align: left; }
+.line-editor th, .line-editor td { border-bottom: 1px solid var(--border); padding: 9px; vertical-align: top; }
+.line-editor tbody tr:last-child td { border-bottom: 0; }
+.line-editor .form-control, .line-editor .form-select { min-height: 38px; }
+.line-readonly { display: block; min-height: 38px; padding: 8px 2px; }
+.line-cell-error { color: var(--error); display: block; font-size: 11px; margin-top: 4px; min-height: 16px; }
+.line-remove-cell { width: 52px; }
+.line-remove { align-items: center; display: inline-flex; justify-content: center; min-height: 38px; min-width: 38px; padding: 5px; }
+.line-remove span { display: none; }
+.line-remove svg { height: 16px; width: 16px; }
+.line-add { align-items: center; display: inline-flex; gap: 6px; margin: 12px; }
+.line-add svg { height: 16px; width: 16px; }
+.line-editor-footer { background: var(--page-bg); border-top: 1px solid var(--border); padding: 10px 12px; text-align: right; }
+
+@media (max-width: 767.98px) {
+  .line-editor { border: 0; overflow: visible; }
+  .line-editor-scroll { overflow: visible; }
+  .line-editor table, .line-editor tbody, .line-editor tr, .line-editor td { display: block; min-width: 0; width: 100%; }
+  .line-editor thead { display: none; }
+  .line-editor tbody { display: grid; gap: 12px; }
+  .line-editor tr { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .line-editor td { align-items: start; border-bottom: 1px solid var(--border); display: grid; gap: 8px; grid-template-columns: minmax(92px, .75fr) minmax(0, 1.25fr); padding: 10px 12px; }
+  .line-editor td::before { color: var(--muted); content: attr(data-label); font-size: 12px; font-weight: 700; padding-top: 9px; }
+  .line-editor td:last-child { border-bottom: 0; }
+  .line-editor .line-remove-cell { grid-template-columns: 1fr; }
+  .line-editor .line-remove-cell::before { display: none; }
+  .line-remove { min-height: 44px; width: 100%; }
+  .line-remove span { display: inline; }
+  .line-editor-footer { border: 1px solid var(--border); border-radius: var(--radius); margin-top: 12px; }
+  .line-add { margin: 12px 0; min-height: 44px; width: 100%; }
+}

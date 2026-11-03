@@ -1,0 +1,143 @@
+<!doctype html>
+<!-- Empty shared shell; core scripts generate its navigation and page content. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loading</title>
+<link rel="stylesheet" href="assets/vendor/vendor.css">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/customers.css">
+<link rel="stylesheet" href="assets/css/suppliers.css">
+<link rel="stylesheet" href="assets/css/business-settings.css">
+<link rel="stylesheet" href="assets/css/administration.css">
+<link rel="stylesheet" href="assets/css/materials.css">
+<link rel="stylesheet" href="assets/css/line-editor.css">
+<link rel="stylesheet" href="assets/css/grn.css">
+<link rel="stylesheet" href="assets/css/sales-documents.css">
+<link rel="stylesheet" href="assets/css/receipts.css">
+<link rel="stylesheet" href="assets/css/delivery.css">
+<link rel="stylesheet" href="assets/css/debtors.css">
+<link rel="stylesheet" href="assets/css/stock-adjustments.css">
+<link rel="stylesheet" href="assets/css/orders.css">
+<link rel="stylesheet" href="assets/css/material-issues.css">
+<link rel="stylesheet" href="assets/css/finished-goods.css">
+<link rel="stylesheet" href="assets/css/quick-sales.css">
+<link rel="stylesheet" href="assets/css/finance-dashboard.css">
+<link rel="stylesheet" href="assets/css/reports.css">
+<link rel="stylesheet" href="assets/css/responsive.css">
+<link rel="stylesheet" href="assets/css/print.css">
+<link rel="stylesheet" href="assets/css/people.css">
+<link rel="stylesheet" href="assets/css/fabric-calculator.css">
+<link rel="stylesheet" href="assets/css/communication.css">
+</head>
+<body>
+<div class="app-shell">
+<aside id="appSidebar" class="app-sidebar" aria-label="Main navigation">
+</aside>
+<div id="sidebarScrim" class="sidebar-scrim">
+</div>
+<main class="app-main">
+<header id="appTopbar" class="app-topbar">
+</header>
+<div id="pageContent" class="page-content" tabindex="-1">
+</div>
+<footer class="app-footer">&copy; <span id="year">
+</span> <span id="footerBusinessName">
+</span>
+</footer>
+</main>
+</div>
+<div id="modalContainer" class="modal-root">
+</div>
+<div id="toastContainer" class="toast-stack" aria-live="polite">
+</div>
+<!-- Core load order follows docs/STORE_API.md; reusable helpers load before modules. -->
+<script src="assets/vendor/vendor.js"></script>
+<script src="assets/js/core/namespace.js"></script>
+<script src="assets/js/core/schema.js"></script>
+<script src="assets/js/core/format.js"></script>
+<script src="assets/js/core/dates.js"></script>
+<script src="assets/js/core/calc.js"></script>
+<script src="assets/js/core/mock-data.js"></script>
+<script src="assets/js/core/store.js"></script>
+<script src="assets/js/core/numbering.js"></script>
+<script src="assets/js/core/settings.js"></script>
+<script src="assets/js/core/session.js"></script>
+<script src="assets/js/core/permissions.js"></script>
+<script src="assets/js/core/navigation.js"></script>
+<script src="assets/js/core/router.js"></script>
+<script src="assets/js/core/components.js"></script>
+<script src="assets/js/core/date-range-filter.js"></script>
+<script src="assets/js/core/data-table.js"></script>
+<script src="assets/js/core/forms.js"></script>
+<script src="assets/js/core/line-editor.js"></script>
+<script src="assets/js/core/print.js"></script>
+<script src="assets/js/core/files.js"></script>
+<script src="assets/js/core/audit.js"></script>
+<script src="assets/js/core/validators.js"></script>
+<script src="assets/js/core/cash-book-service.js"></script>
+<script src="assets/js/core/customers-service.js"></script>
+<script src="assets/js/core/suppliers-service.js"></script>
+<script src="assets/js/core/inventory-service.js"></script>
+<script src="assets/js/core/materials-service.js"></script>
+<script src="assets/js/core/grn-service.js"></script>
+<script src="assets/js/core/stock-adjustment-service.js"></script>
+<script src="assets/js/core/sales-doc-service.js"></script>
+<script src="assets/js/core/invoice-service.js"></script>
+<script src="assets/js/core/receipt-service.js"></script>
+<script src="assets/js/core/debtor-service.js"></script>
+<script src="assets/js/core/delivery-service.js"></script>
+<script src="assets/js/core/order-service.js"></script>
+<script src="assets/js/core/material-issue-service.js"></script>
+<script src="assets/js/core/finished-goods-service.js"></script>
+<script src="assets/js/core/quick-sale-service.js"></script>
+<script src="assets/js/core/expense-service.js"></script>
+<script src="assets/js/core/dashboard-service.js"></script>
+<script src="assets/js/core/reports-service.js"></script>
+<script src="assets/js/core/people-service.js"></script>
+<script src="assets/js/core/fabric-calculator-service.js"></script>
+<script src="assets/js/core/communication-service.js"></script>
+<script src="assets/js/core/marketing-service.js"></script>
+<script src="assets/js/core/sales-target-service.js"></script>
+<script src="assets/js/modules/admin-data.js"></script>
+<script src="assets/js/modules/customers.js"></script>
+<script src="assets/js/modules/suppliers.js"></script>
+<script src="assets/js/modules/business-settings.js"></script>
+<script src="assets/js/modules/document-numbering.js"></script>
+<script src="assets/js/modules/audit-log.js"></script>
+<script src="assets/js/modules/materials.js"></script>
+<script src="assets/js/modules/stock-movements.js"></script>
+<script src="assets/js/modules/stock-alerts.js"></script>
+<script src="assets/js/modules/grn.js"></script>
+<script src="assets/js/modules/stock-adjustments.js"></script>
+<script src="assets/js/modules/sales-documents.js"></script>
+<script src="assets/js/modules/receipts.js"></script>
+<script src="assets/js/modules/delivery-notes.js"></script>
+<script src="assets/js/modules/dispatch-log.js"></script>
+<script src="assets/js/modules/orders.js"></script>
+<script src="assets/js/modules/material-issues.js"></script>
+<script src="assets/js/modules/production-board.js"></script>
+<script src="assets/js/modules/finished-goods.js"></script>
+<script src="assets/js/modules/quick-sales.js"></script>
+<script src="assets/js/modules/expenses.js"></script>
+<script src="assets/js/modules/cash-book.js"></script>
+<script src="assets/js/modules/dashboard.js"></script>
+<script src="assets/js/modules/reports.js"></script>
+<script src="assets/js/modules/financial-statements.js"></script>
+<script src="assets/js/modules/people.js"></script>
+<script src="assets/js/modules/fabric-calculator.js"></script>
+<script src="assets/js/modules/debtors.js"></script>
+<script src="assets/js/modules/reminders.js"></script>
+<script src="assets/js/modules/ageing-report.js"></script>
+<script src="assets/js/modules/statements.js"></script>
+<script src="assets/js/modules/communication.js"></script>
+<script src="assets/js/modules/marketing.js"></script>
+<script src="assets/js/modules/lead-sources.js"></script>
+<script src="assets/js/modules/sales-targets.js"></script>
+<script src="assets/js/core/app.js"></script>
+<script>/* Shell-only startup wiring; settings owns all business wording. */ document.getElementById('year').textContent = new Date().getFullYear(); document.getElementById('footerBusinessName').textContent = GT.settings.businessName; window.GT.app.start();</script>
+</body>
+</html>

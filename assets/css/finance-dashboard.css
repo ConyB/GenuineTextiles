@@ -1,0 +1,21 @@
+.expense-page > .gt-form { max-width: 900px; }
+.expense-page > #saveExpenseDraft { margin-top: 12px; min-height: 44px; }
+.expense-photo-preview, .expense-photo-button img { display: block; max-height: 130px; max-width: 180px; object-fit: contain; }
+.expense-photo-button { background: white; border: 1px solid var(--border); border-radius: 8px; min-height: 44px; padding: 6px; }
+.expense-photo-large { display: block; max-height: 70vh; max-width: 100%; }
+.print-document-heading { align-items: center; border: 2px solid var(--brand-blue); display: flex; justify-content: space-between; gap: 12px; margin: 18px 0 24px; padding: 9px 12px; }
+.print-document-heading h2 { color: var(--brand-blue); font-size: 20px; margin: 0; text-align: center; }
+.print-document-heading > span:first-child { color: var(--brand-red); font-size: 18px; font-weight: 700; }
+.print-document-body { border: 1px solid #777; padding: 16px 20px; }
+.print-document-body p { border-bottom: 1px solid #ccc; margin: 0; min-height: 38px; padding: 9px 0; }
+.print-document-body p:last-child { border-bottom: 0; }
+.dashboard-page .dashboard-section { margin-top: 20px; }
+.dashboard-bars { display: grid; gap: 4px; }
+.dashboard-bars a { display: grid; grid-template-columns: minmax(150px, 1fr) minmax(80px, 2fr) 30px; align-items: center; gap: 12px; color: var(--brand-blue); text-decoration: none; min-height: 34px; }
+.dashboard-bars a:hover { text-decoration: underline; }
+.dashboard-bar-track { display: block; height: 8px; border-radius: 12px; background: #e9eef4; overflow: hidden; }
+.dashboard-bar-track > span { display: block; height: 100%; background: #245d91; border-radius: 12px; }
+@media (max-width: 575px) {
+  .dashboard-bars a { grid-template-columns: minmax(110px, 1fr) minmax(50px, 1fr) 24px; gap: 8px; font-size: 12px; min-height: 44px; }
+  .print-document-heading { flex-wrap: wrap; }
+}

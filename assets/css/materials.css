@@ -1,0 +1,19 @@
+/* Phase 5 materials, stock ledger and low-stock alert presentation. */
+.material-form-page { max-width: 1080px; }
+.material-detail-page .detail-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.stock-control-note { background: var(--brand-blue-tint); border-left: 4px solid var(--brand-blue); color: var(--muted); margin: 0 0 var(--space-4); padding: 12px 14px; }
+.stock-location-table { min-width: 620px; }
+.material-movement-table { min-width: 960px; }
+.stock-in { color: var(--success); font-weight: 700; }
+.stock-out { color: var(--error); font-weight: 700; }
+
+.stock-percentage { min-width: 110px; }
+.stock-percentage > span { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; }
+.stock-level-bar { background: var(--page-bg); border-radius: 999px; height: 7px; overflow: hidden; }
+.stock-level-bar i { display: block; height: 100%; }
+.stock-level-bar .warning { background: var(--warning); }
+.stock-level-bar .error { background: var(--error); }
+
+@media (max-width: 767.98px) {
+  .stock-location-table, .material-movement-table { min-width: 0; }
+}

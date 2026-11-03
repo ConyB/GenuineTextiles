@@ -1,0 +1,13 @@
+.fabric-calculator-page .fabric-rule-notice { background: var(--brand-blue-tint); border-left: 3px solid var(--brand-blue); margin: 0 0 20px; padding: 12px 16px; }
+.fabric-calculator-page .detail-card { margin: 20px 0; }
+.fabric-calculator-page .fabric-rules > h2 { margin-top: 32px; }
+.fabric-calculator-page .fabric-rules .detail-card h3 { font-size: 18px; margin-bottom: 16px; }
+.fabric-style-section { margin-top: 18px; }
+.fabric-options { display: flex; flex-wrap: wrap; gap: 12px; }
+.fabric-option { align-items: center; border: 1px solid var(--border); border-radius: 6px; display: flex; gap: 9px; min-height: 44px; padding: 9px 12px; }
+.fabric-option[hidden] { display: none; }
+.fabric-option input { height: 18px; width: 18px; }
+.fabric-result-empty { color: var(--muted); }
+.fabric-print-title { color: var(--brand-blue); font-size: 18px; margin: 18px 0; }
+.fabric-print-note { font-size: 11px; margin-top: 18px; }
+@media (max-width: 575px) { .fabric-options { display: block; }.fabric-option { margin-bottom: 8px; width: 100%; } }

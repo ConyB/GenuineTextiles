@@ -1,0 +1,40 @@
+/* Shared screen preview and A4 print foundation from DOCUMENT_TEMPLATES.md. */
+.print-preview-open { overflow: hidden; }
+.print-preview-shell { background: var(--page-bg); inset: 0; overflow: auto; padding: 84px 24px 32px; position: fixed; z-index: 1080; }
+.print-preview-toolbar { align-items: center; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; gap: 16px; height: 64px; inset: 0 0 auto; justify-content: space-between; padding: 0 24px; position: fixed; z-index: 1081; }
+.print-preview-toolbar .btn { align-items: center; display: inline-flex; gap: 7px; }
+.print-page { background: #fff; box-shadow: 0 8px 30px rgba(31,36,48,.16); color: #111; font-family: Arial, Helvetica, sans-serif; margin: 0 auto; min-height: 297mm; padding: 12mm; position: relative; width: 210mm; }
+.print-letterhead { align-items: start; display: grid; gap: 12px; grid-template-columns: 62px minmax(0, 1fr) auto; }
+.print-letterhead img { height: 54px; object-fit: contain; width: 62px; }
+.print-letterhead-identity strong, .print-letterhead-identity em, .print-letterhead-identity span, .print-letterhead-phones span { display: block; }
+.print-letterhead-identity strong { color: var(--brand-blue); font-size: 19px; }
+.print-letterhead-identity em { color: var(--brand-red); font-size: 11px; }
+.print-letterhead-identity span, .print-letterhead-phones { font-size: 9px; }
+.print-letterhead-phones { text-align: right; }
+.print-brand-rule { border-top: 2px solid var(--brand-blue); margin: 10px 0 20px; }
+.print-signatures { break-inside: avoid; display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin-top: 42px; }
+.print-signatures > div { text-align: center; }
+.print-signature-line { border-top: 1px solid #333; display: block; margin-bottom: 7px; }
+.print-watermark { color: rgba(198,40,40,.16); font-size: 92px; font-weight: 800; left: 50%; letter-spacing: .12em; pointer-events: none; position: absolute; top: 45%; transform: translate(-50%, -50%) rotate(-32deg); z-index: 2; }
+.print-page table { border-collapse: collapse; width: 100%; }
+.print-page th, .print-page td { border: 1px solid #999; font-size: 10px; padding: 6px; text-align: left; }
+.print-page thead { display: table-header-group; }
+.print-keep-together { break-inside: avoid; }
+
+@media (max-width: 840px) { .print-preview-shell { padding: 76px 12px 20px; }.print-preview-toolbar { padding: 0 12px; }.print-page { min-height: 0; padding: 18px; width: 100%; } }
+
+@page { margin: 12mm; size: A4 portrait; }
+@page landscape-report { margin: 12mm; size: A4 landscape; }
+.print-landscape .print-page { min-height: 210mm; width: 297mm; }
+@media (max-width: 840px) { .print-landscape .print-page { min-height: 0; width: 100%; } }
+@media print {
+  .print-landscape .print-page { page: landscape-report; }
+  html, body { background: #fff !important; height: auto; }
+  .app-shell, .app-sidebar, .app-topbar, .app-footer, .page-content, .toast-stack, .modal-root, .sidebar-scrim, .print-preview-toolbar { display: none !important; }
+  .print-preview-shell { display: block; inset: auto; overflow: visible; padding: 0; position: static; }
+  .print-page { box-shadow: none; margin: 0; min-height: auto; padding: 0; width: auto; }
+  .print-landscape .print-page { min-height: auto; width: auto; }
+  .print-page thead { display: table-header-group; }
+  .print-keep-together, .print-signatures { break-inside: avoid; }
+  * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}

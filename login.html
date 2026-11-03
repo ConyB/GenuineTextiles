@@ -1,0 +1,81 @@
+<!doctype html>
+<!-- Authentication entry point; settings.js supplies the visible copy and session.js owns login state. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loading</title>
+  <link rel="stylesheet" href="assets/vendor/vendor.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body class="auth-page">
+  <main class="auth-layout">
+    <section class="auth-brand-panel" id="authBrandPanel" aria-label="Genuine Textiles introduction"></section>
+    <section class="auth-form-panel" aria-label="Sign in">
+      <div class="auth-card">
+        <h1 id="loginHeading"></h1>
+        <p class="auth-intro" id="loginIntro"></p>
+        <form id="loginForm" novalidate>
+          <label class="form-label" id="emailLabel" for="email"></label>
+          <input class="form-control mb-3" id="email" type="email" autocomplete="email" required>
+          <label class="form-label" id="passwordLabel" for="password"></label>
+          <div class="password-field">
+            <input class="form-control" id="password" type="password" autocomplete="current-password" required>
+            <button class="password-toggle" id="passwordToggle" type="button" aria-label="Show password"><i data-lucide="eye"></i><span class="visually-hidden">Show password</span></button>
+          </div>
+          <div class="auth-error" id="loginError" role="alert"></div>
+          <button class="btn btn-primary w-100 mt-3" id="loginButton" type="submit"></button>
+        </form>
+        <p class="text-center mt-3 mb-0"><a class="auth-link" id="forgotPasswordLink" href="forgot-password.html"></a></p>
+        <details class="demo-access">
+          <summary id="demoHeading"></summary>
+          <p id="demoDescription"></p>
+          <div class="demo-buttons" id="demoButtons"></div>
+        </details>
+      </div>
+    </section>
+  </main>
+  <!-- Only authentication dependencies, in the order required by docs/STORE_API.md. -->
+  <script src="assets/vendor/vendor.js"></script>
+  <script src="assets/js/core/namespace.js"></script>
+  <script src="assets/js/core/schema.js"></script>
+  <script src="assets/js/core/format.js"></script>
+  <script src="assets/js/core/dates.js"></script>
+  <script src="assets/js/core/calc.js"></script>
+  <script src="assets/js/core/mock-data.js"></script>
+  <script src="assets/js/core/store.js"></script>
+  <script src="assets/js/core/settings.js"></script>
+  <script src="assets/js/core/session.js"></script>
+  <script src="assets/js/core/auth-page.js"></script>
+  <script>
+    /* Only delegates login behaviour to session.js; all page copy is in settings.js. */
+    GT.authPage.renderBrand();
+    GT.authPage.fillLoginCopy();
+    GT.authPage.setupPasswordToggle();
+    var demoUsers = GT.session.users();
+    var roleCounts = demoUsers.reduce(function (counts, user) { counts[user.role] = (counts[user.role] || 0) + 1; return counts; }, {});
+    demoUsers.forEach(function (user) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'btn btn-sm btn-outline-primary';
+      button.textContent = 'Log in as ' + GT.session.roleLabel(user.role) + (roleCounts[user.role] > 1 ? ' — ' + user.name : '');
+      button.addEventListener('click', function () {
+        GT.session.loginAsUser(user.id);
+        window.location.href = 'index.html#/dashboard';
+      });
+      document.getElementById('demoButtons').appendChild(button);
+    });
+    document.getElementById('loginForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var user = GT.session.login(document.getElementById('email').value.trim(), document.getElementById('password').value);
+      document.getElementById('loginError').style.display = user ? 'none' : 'block';
+      if (user) window.location.href = 'index.html#/dashboard';
+    });
+    GT.authPage.refreshIcons();
+    window.setTimeout(GT.authPage.refreshIcons, 500);
+  </script>
+</body>
+</html>

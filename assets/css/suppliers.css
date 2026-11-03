@@ -1,0 +1,2 @@
+/* Supplier-only composition; shared list, form and detail styles live in components.css. */
+.suppliers-page { width: 100%; }.supplier-form-page { margin: 0 auto; max-width: 980px; }.supplier-detail-page .detail-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }

@@ -1,0 +1,90 @@
+/* Delivery layouts use the shared table, forms, cards and print foundation. */
+.delivery-page { min-width:0; }
+.delivery-page .detail-card { margin-bottom:20px; }
+.delivery-pick { max-width:620px; }
+.delivery-pick .btn { margin-top:16px; }
+.delivery-form-layout { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(310px,1fr); gap:20px; align-items:start; }
+.delivery-form-layout > * { min-width:0; }
+.delivery-form-layout aside { display:grid; gap:20px; }
+.delivery-form-layout aside .detail-card { margin:0; }
+.delivery-form-layout #deliveryForm { background:#fff; border:1px solid var(--border,#dde0ea); border-radius:12px; padding:20px; }
+.delivery-form-layout #deliveryLineMount { min-width:0; }
+.delivery-form-layout .line-editor table { min-width:0; table-layout:fixed; }
+.delivery-form-layout .line-editor th,.delivery-form-layout .line-editor td { padding:7px 5px; overflow-wrap:anywhere; }
+.delivery-form-layout .line-editor th:nth-child(1) { width:31%; }
+.delivery-form-layout .line-editor th:nth-child(2) { width:10%; }
+.delivery-form-layout .line-editor th:nth-child(3) { width:13%; }
+.delivery-form-layout .line-editor th:nth-child(4) { width:16%; }
+.delivery-form-layout .line-editor th:nth-child(5) { width:30%; }
+.delivery-form-layout .line-editor input { width:100%; }
+.delivery-form-layout #deliveryReleasePanel .detail-grid { display:block; }
+.delivery-form-layout #deliveryReleasePanel .detail-row { grid-template-columns:minmax(80px,1fr) minmax(0,1fr); margin-right:0; }
+.delivery-page .detail-card { padding:20px; }
+.delivery-page .detail-card > h2 { font-size:18px; margin:0 0 16px; }
+.delivery-live { overflow:hidden; }
+.delivery-live #deliveryLivePreview { max-height:540px; overflow:auto; transform-origin:top left; }
+.delivery-live .delivery-print-copy { font-size:11px; }
+.delivery-live .print-letterhead { grid-template-columns:42px minmax(0,1fr); }
+.delivery-live .print-letterhead img { max-width:42px; }
+.delivery-live .print-letterhead-phones { display:none; }
+.delivery-live .print-letterhead-identity strong { font-size:15px; }
+.delivery-live .delivery-print-heading { flex-wrap:wrap; }
+.delivery-live .delivery-print-heading h2 { font-size:16px; }
+.delivery-live .delivery-print-table th,.delivery-live .delivery-print-table td { font-size:9px; padding:4px; }
+.delivery-detail-layout { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr); gap:20px; align-items:start; }
+.delivery-detail-layout > * { min-width:0; }
+.delivery-detail-layout .detail-grid { display:block; }
+.delivery-detail-layout .detail-row { grid-template-columns:minmax(145px,.7fr) minmax(0,1.3fr); margin-right:0; }
+.delivery-timeline { list-style:none; margin:0; padding:0 0 0 18px; border-left:2px solid #dde0ea; }
+.delivery-timeline li { position:relative; display:flex; justify-content:space-between; gap:12px; padding:0 0 18px 15px; }
+.delivery-timeline li:last-child { padding-bottom:0; }
+.delivery-timeline li::before { content:''; position:absolute; left:-24px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--brand-blue,#2e3192); }
+.delivery-timeline span { color:#667085; white-space:nowrap; }
+.delivery-confirm #deliveryConfirmLines { margin:16px 0; }
+.delivery-confirm .line-editor { max-height:45vh; overflow:auto; }
+.delivery-void-reason { color:#c62828; }
+.delivery-print-copy { position:relative; font:13px Arial,Helvetica,sans-serif; color:#1f2430; }
+.delivery-copy-label { font-weight:700; text-align:right; text-transform:uppercase; letter-spacing:.1em; }
+.delivery-print-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:18px 0; border-bottom:2px solid #2e3192; padding-bottom:10px; }
+.delivery-print-heading h2 { margin:0; font-size:21px; }
+.delivery-print-heading strong { color:#e81820; font-size:17px; }
+.delivery-print-meta { display:grid; grid-template-columns:1fr 1fr; gap:8px 20px; margin:16px 0; }
+.delivery-print-meta div { min-width:0; }
+.delivery-print-meta dt { color:#667085; font-size:11px; text-transform:uppercase; }
+.delivery-print-meta dd { margin:2px 0 0; overflow-wrap:anywhere; }
+.delivery-print-table { width:100%; border-collapse:collapse; margin:18px 0; }
+.delivery-print-table th,.delivery-print-table td { border:1px solid #dde0ea; padding:8px; text-align:left; }
+.delivery-print-table th { background:#ecedf8; }
+.delivery-print-table th:nth-child(n+3),.delivery-print-table td:nth-child(n+3) { text-align:right; }
+.dispatch-print-table th:nth-child(n+3),.dispatch-print-table td:nth-child(n+3) { text-align:left; }
+.dispatch-print-table th:nth-child(6),.dispatch-print-table td:nth-child(6) { text-align:right; }
+.delivery-print-signoff { margin-top:35px; }
+.delivery-print-signoff .sales-stamp-area { margin:24px 0 0 auto; }
+.delivery-copy-select { display:flex; align-items:center; gap:8px; margin-left:12px; }
+.delivery-copy-select select { min-width:170px; }
+.delivery-cut-line { border-top:1px dashed #667085; margin:18px 0; text-align:center; color:#667085; font-size:10px; }
+.delivery-two-copies .delivery-print-copy { font-size:10px; }
+.delivery-two-copies .delivery-print-copy .print-letterhead { margin-bottom:4px; }
+.delivery-two-copies .delivery-print-heading { margin:8px 0; }
+.delivery-two-copies .delivery-print-heading h2 { font-size:16px; }
+.delivery-two-copies .delivery-print-meta { margin:8px 0; }
+.delivery-two-copies .delivery-print-table { margin:9px 0; }
+.delivery-two-copies .delivery-print-table th,.delivery-two-copies .delivery-print-table td { padding:4px; }
+.delivery-two-copies .delivery-print-signoff { margin-top:14px; }
+@media (max-width:900px) {
+  .delivery-form-layout,.delivery-detail-layout { grid-template-columns:1fr; }
+  .delivery-live { display:none; }
+}
+@media (max-width:575px) {
+  .delivery-form-layout #deliveryForm { padding:14px; }
+  .delivery-form-layout .line-editor th,.delivery-form-layout .line-editor td { width:auto; }
+  .delivery-print-heading { flex-wrap:wrap; }
+  .delivery-print-meta { grid-template-columns:1fr; }
+  .delivery-confirm .line-editor { max-height:40vh; }
+}
+@media print {
+  .delivery-print-copy { break-inside:avoid; }
+  .delivery-print-table thead { display:table-header-group; }
+  .delivery-print-signoff { break-inside:avoid; }
+  .delivery-cut-line { border-color:#777; }
+}

@@ -1,0 +1,14 @@
+/* Phase 13 layout only; controls, cards, tables and print shell use shared styles. */
+.material-issues-page .issue-detail-grid { display:grid; grid-template-columns:minmax(0,2fr) minmax(240px,1fr); gap:16px; align-items:start; }
+.material-issues-page .issue-detail-grid > * { min-width:0; }
+.material-issues-page .detail-card h2 { font-size:18px; line-height:1.3; margin:0 0 14px; }
+.material-issues-page .detail-card h2:not(:first-child) { margin-top:20px; }
+.material-issues-page .issue-stock-note { color:var(--warning-color,#9a6700); font-size:12px; }
+.issue-slip-heading { display:flex; justify-content:space-between; align-items:baseline; gap:16px; margin:22px 0 16px; }
+.issue-slip-heading h1 { font-size:20px; margin:0; }
+.issue-slip-heading strong { color:var(--brand-red); }
+.issue-slip-meta { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:18px; }
+.issue-slip-meta div { min-width:0; }
+.issue-slip-meta dt { color:#667085; font-size:11px; }
+.issue-slip-meta dd { margin:0; font-weight:600; overflow-wrap:anywhere; }
+@media (max-width:767px) { .material-issues-page .issue-detail-grid { grid-template-columns:1fr; } .issue-slip-meta { grid-template-columns:1fr; } }

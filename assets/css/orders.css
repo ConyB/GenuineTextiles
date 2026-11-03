@@ -1,0 +1,58 @@
+.orders-page { display: grid; gap: 18px; min-width: 0; }
+.order-due-hint { display: block; color: var(--muted-text, #667085); font-size: 12px; }
+.order-due-hint.late { color: #c62828; font-weight: 700; }
+.order-stage-chip { display: block; max-width: 100%; }
+.order-stage-chip .status-badge { white-space: normal; overflow-wrap: anywhere; display: inline-block; max-width: 100%; line-height: 1.25; }
+.order-form-page .form-section { margin-top: 18px; }
+.order-source-note, .order-warning { padding: 12px 16px; border-radius: 8px; background: #fff5df; color: #694a00; }
+.order-detail-page .detail-card { min-width: 0; }
+.order-detail-page .detail-card h2 { font-size: 18px; line-height: 1.3; margin-bottom: 12px; }
+.order-detail-page aside .detail-grid { grid-template-columns: minmax(0, 1fr); }
+.order-detail-grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap: 18px; }
+.order-detail-grid aside { display: grid; align-content: start; gap: 18px; }
+.order-lines-scroll { overflow-x: auto; }
+.order-stage-tracker { list-style: none; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin: 0; padding: 0; }
+.order-stage-step { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; color: #667085; font-size: 12px; min-width: 0; }
+.order-stage-number { display: grid; place-items: center; width: 32px; height: 32px; border: 2px solid #dde0ea; border-radius: 50%; font-weight: 700; }
+.order-stage-step.done .order-stage-number { color: #fff; background: #1e8e4e; border-color: #1e8e4e; }
+.order-stage-step.current { color: #2e3192; font-weight: 700; }
+.order-stage-step.current .order-stage-number { color: #fff; background: #2e3192; border-color: #2e3192; }
+.order-timeline { padding-left: 20px; margin: 0; }
+.order-timeline li { margin-bottom: 12px; }
+.order-timeline span { display: block; color: #667085; font-size: 12px; }
+.order-timeline p { margin: 4px 0 0; }
+.production-filters { display: flex; align-items: center; gap: 12px; }
+.production-page, #productionBoardMount { min-width: 0; max-width: 100%; }
+.production-filters select { width: min(240px, 100%); }
+.production-late-filter { display: flex; align-items: center; gap: 8px; min-height: 44px; }
+.production-board { display: grid; grid-template-columns: repeat(7, minmax(130px, 1fr)); gap: 8px; overflow-x: auto; min-width: 0; max-width: 100%; padding-bottom: 4px; }
+.production-stage-column { background: #fff; border: 1px solid #dde0ea; border-radius: 10px; padding: 12px; min-width: 0; }
+.production-stage-column h2 { font-size: 14px; line-height: 1.3; display: flex; justify-content: space-between; gap: 6px; margin: 0 0 12px; }
+.production-stage-column h2 span { color: #667085; }
+.production-order-card { display: grid; gap: 4px; color: #1f2430; text-decoration: none; border: 1px solid #dde0ea; border-radius: 8px; padding: 10px; margin-bottom: 8px; min-height: 44px; }
+.production-order-card:hover, .production-order-card:focus-visible { border-color: #2e3192; background: #ecedf8; }
+.production-order-card span { font-size: 12px; }
+.production-empty { color: #667085; font-size: 12px; }
+.order-job-title { display: flex; justify-content: space-between; align-items: center; }
+.order-job-title h1 { font-size: 18px; }
+.order-job-title strong { color: #e81820; }
+.order-job-details { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 12px 0 16px; }
+.order-job-details div { display: grid; gap: 4px; min-width: 0; border-bottom: 1px solid #dde0ea; padding-bottom: 6px; font-size: 11px; }
+.order-job-details strong { color: #667085; }
+.order-job-details span { overflow-wrap: anywhere; }
+.order-job-notes { min-height: 90px; }
+.order-job-notes h2 { font-size: 14px; }
+.order-job-notes span { display: block; border-bottom: 1px solid #aeb4c3; height: 22px; }
+.order-job-signoff { break-inside: avoid; }
+.order-job-signoff h2 { font-size: 14px; }
+.order-job-signoff div { display: flex; gap: 16px; border: 1px solid #dde0ea; padding: 5px 7px; font-size: 11px; }
+.order-job-signoff div strong { min-width: 145px; }
+@media (max-width: 1100px) { .production-board { grid-template-columns: repeat(7, 190px); } }
+@media (max-width: 767px) {
+  .order-detail-grid { grid-template-columns: minmax(0, 1fr); }
+  .order-stage-tracker { display: grid; grid-template-columns: 1fr; gap: 0; }
+  .order-stage-step { flex-direction: row; text-align: left; min-height: 44px; }
+  .production-filters { flex-wrap: wrap; }
+  .production-board { display: grid; grid-template-columns: minmax(0, 1fr); overflow-x: visible; }
+  .production-stage-column { width: 100%; }
+}

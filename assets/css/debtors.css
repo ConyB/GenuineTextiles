@@ -1,0 +1,34 @@
+/* Debtor details, reminder controls and ageing strip use the shared page tokens. */
+.debtors-page .detail-card { margin-bottom: 16px; }
+.debtors-page .detail-tab-panel { padding-top: 16px; }
+.debtors-page .detail-tab-panel h2 { font-size: 18px; }
+.debtors-page .status-badge { max-width: 100%; overflow-wrap: anywhere; white-space: normal; }
+.debtors-page .stat-card-grid { margin-bottom: 16px; }
+.ageing-bar { background: var(--border); border-radius: 10px; display: flex; height: 16px; margin: 0 0 20px; overflow: hidden; }
+.ageing-bar span { display: block; min-width: 0; }
+.ageing-bar-b0_30 { background: #1e8e4e; }
+.ageing-bar-b31_60 { background: #e8a300; }
+.ageing-bar-b61_plus { background: #c62828; }
+.ageing-total { font-weight: 700; margin-top: 12px; text-align: right; }
+.reminder-form { display: grid; gap: 8px; max-height: 70vh; overflow-y: auto; }
+.reminder-form fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
+.reminder-form legend { float: none; font-size: 14px; margin: 0; width: auto; }
+.reminder-check { align-items: center; display: flex; gap: 8px; min-height: 44px; }
+.reminder-check input { height: 18px; width: 18px; }
+@media (max-width: 575px) { .debtors-page .module-page-actions { flex-wrap: wrap; }.reminder-form { max-height: 75vh; } }
+.statement-form-layout { align-items: start; display: grid; gap: 20px; grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+.statement-form-layout > * { min-width: 0; }
+.statement-mobile-tabs { display: none; }
+.statement-live .print-page { box-shadow: none; min-height: 560px; padding: 12px; width: 100%; }
+.statement-detail-page { max-width: 210mm; }
+.statement-date { color: var(--brand-red); font-weight: 700; margin: 20px 0; text-align: right; }
+.statement-brand-stripe { background: linear-gradient(90deg,var(--brand-red) 0 12%,var(--brand-blue) 12% 100%); height: 3px; margin-top: -18px; }
+.statement-addressee { line-height: 1.6; margin: 22px 0; }
+.statement-subject { color: var(--brand-blue); font-weight: 700; margin-top: 24px; }
+.statement-letter-table { margin: 20px 0; }
+.statement-letter-table .amount { text-align: right; white-space: nowrap; }
+.statement-letter-table tfoot th { font-weight: 700; }
+.statement-signoff { margin-top: 42px; }
+.statement-signoff strong, .statement-signoff span { display: block; margin-top: 10px; }
+.statement-footer { background: var(--brand-blue); color: #fff; margin-top: 56px; padding: 10px; text-align: center; }
+@media (max-width: 767px) { .statement-form-layout { display: block; }.statement-mobile-tabs { display: block; }.statement-form-layout #statementPreviewPanel { display: none; }.statement-form-layout.show-preview #statementFormPanel { display: none; }.statement-form-layout.show-preview #statementPreviewPanel { display: block; }.statement-letter-table { display: block; overflow-x: auto; }.statement-live .print-page { overflow: hidden; } }

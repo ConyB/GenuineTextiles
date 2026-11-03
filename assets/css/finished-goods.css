@@ -1,0 +1,6 @@
+.finished-goods-page .detail-card { margin-bottom: 20px; padding:20px; }
+.finished-goods-page .fg-order { display:flex; align-items:center; flex-wrap:wrap; gap:12px; padding:12px 0; border-top:1px solid var(--border, #dde0ea); }
+.finished-goods-page .fg-order:first-of-type { border-top:0; }
+.finished-goods-page .fg-order .btn { min-height:44px; }
+.fg-dialog-fields { display:grid; gap:8px; }
+.fg-dialog-fields .form-control, .fg-dialog-fields .form-select { min-height:44px; }

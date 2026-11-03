@@ -1,0 +1,37 @@
+/* Responsive shell and authentication rules from UI_UX_SYSTEM.md. */
+@media (max-width: 1199.98px) { .quick-action { min-width: 36px; padding-left: 8px; padding-right: 8px; }.quick-action-label { display: none; } }
+@media (max-width: 991.98px) {
+  .app-shell { display: block; }.app-sidebar { box-shadow: 4px 0 14px rgba(0,0,0,.25); display: none; height: 100vh; left: 0; position: fixed; top: 0; width: min(var(--sidebar-width), 84vw); z-index: 1060; }.app-sidebar.open { display: flex; }.sidebar-scrim.open { background: rgba(31,36,48,.45); display: block; }.menu-button { display: inline-flex; }.app-topbar { gap: 6px; padding: 0 12px; }.topbar-breadcrumb { display: none; }.topbar-mobile-title { display: block; }.location-switcher { display: none; }.user-menu-trigger { min-width: 44px; padding: 4px; }.page-content { padding: 16px; }.app-footer { padding: 12px 16px; }.page-placeholder { padding: 24px 18px; }
+  .auth-layout { display: block; }.auth-brand-panel { min-height: 0; padding: 22px 20px; }.auth-brand-panel::before { background-size: 30px 30px; }.auth-logo-wrap { gap: 10px; margin: 0 0 16px; }.auth-logo, .auth-logo-fallback { height: 48px; width: 48px; }.auth-logo-fallback { font-size: 16px; }.auth-brand-name { font-size: 16px; }.auth-brand-tagline { font-size: 12px; }.auth-craft-line { font-size: 13px; margin-bottom: 12px; }.auth-hero-title { font-size: 24px; margin-bottom: 8px; }.auth-benefit-list, .auth-uniform-types { display: none; }.auth-form-panel { align-items: flex-start; min-height: auto; padding: 20px 16px 28px; }.auth-card { max-width: 520px; padding: 26px 20px; }
+}
+
+/* Priority 2 columns leave first; priority 3 columns leave on tablet widths. */
+@media (max-width: 1280px) { .shared-data-table .table-priority-2 { display: none; } }
+@media (max-width: 1024px) {
+  .shared-data-table .table-priority-3 { display: none; }
+  .shared-data-table { min-width: 720px; }
+  .shared-data-table th:first-child, .shared-data-table td:first-child { background: var(--surface); left: 0; position: sticky; z-index: 2; }
+  .shared-data-table th:first-child, .shared-data-table th.actions-column { background: var(--brand-blue-tint); z-index: 3; }
+  .shared-data-table .actions-column { background: var(--surface); position: sticky; right: 0; z-index: 2; }
+}
+@media (max-width: 420px) { .topbar-title { max-width: 108px; }.topbar-actions { gap: 1px; }.quick-action { min-width: 34px; padding-left: 6px; padding-right: 6px; }.auth-card h1 { font-size: 22px; } }
+
+@media (max-width: 767.98px) {
+  .admin-data-page { padding: 18px; }.page-heading { display: block; }.page-heading .badge { margin-top: 10px; }
+  .data-browser-layout { grid-template-columns: 1fr; }.data-table-list { max-height: 260px; }.data-browser-table { max-height: 480px; }
+  .module-page-header { align-items: stretch; flex-direction: column; }.module-page-actions { width: 100%; }.module-page-actions .btn { justify-content: center; width: 100%; }
+  .table-toolbar-primary { display: grid; grid-template-columns: minmax(0, 1fr) 40px; }.table-search { min-width: 0; width: 100%; }.table-export { padding: 0; width: 40px; }.table-export span { display: none; }.table-filters { width: 100%; }.table-filter { flex: 0 0 calc(50% - 6px); min-width: 0; }.table-filter .form-select { min-width: 0 !important; }.date-range-trigger, .table-clear-filters { flex: 0 0 100%; }.table-clear-filters { text-align: left; }
+  .table-wrapper { background: var(--page-bg); border: 0; overflow: visible; padding: 0 12px 12px; }.shared-data-table, .shared-data-table tbody, .shared-data-table tr, .shared-data-table td { display: block; min-width: 0; width: 100%; }.shared-data-table thead { display: none; }.shared-data-table tbody { display: grid; gap: 12px; }.shared-data-table tbody tr { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }.shared-data-table td { align-items: start; border-bottom: 1px solid var(--border); display: grid; gap: 10px; grid-template-columns: minmax(96px, .8fr) minmax(0, 1.2fr); padding: 10px 12px; position: static; text-align: left; white-space: normal; }.shared-data-table td::before { color: var(--muted); content: attr(data-label); font-size: 12px; font-weight: 700; }.shared-data-table td:last-child { border-bottom: 0; }.shared-data-table tbody tr:hover { background: var(--surface); }.shared-data-table td.actions-column { grid-template-columns: 1fr; min-width: 0; position: static; text-align: left; white-space: normal; width: 100%; }.table-row-actions { display: flex; flex-wrap: nowrap; justify-content: flex-start; width: auto; }.table-action-primary-slot, .table-action-more-slot { display: contents; }.table-action-button { height: 44px; min-height: 44px; padding: 7px 11px; }.table-action-button .table-action-label { display: inline; }.table-action-menu-item { min-height: 44px; }.table-meta { align-items: center; }.table-pagination { align-items: stretch; flex-wrap: wrap; }.table-pagination > span { order: -1; width: 100%; }.table-pagination div { margin-left: auto; }
+  .form-section { padding: 20px 16px; }.form-grid { grid-template-columns: 1fr; }.form-field-full { grid-column: auto; }.form-actions { padding: 16px; }.form-actions .btn { flex: 1; }
+  .detail-tab-panel { padding: 20px 16px; }.detail-grid { grid-template-columns: 1fr; }.detail-row, .detail-row:nth-child(odd) { margin-right: 0; }.detail-row { grid-template-columns: minmax(100px, .8fr) minmax(0, 1.2fr); }
+  .customer-groups-page .shared-data-table { min-width: 0; }
+}
+
+@media (max-width: 575.98px) {
+  .user-menu-copy, .user-menu-chevron { display: none; }.user-menu-trigger { gap: 0; }
+  .stat-card { flex-basis: 100%; min-height: 112px; }
+  .date-range-backdrop { align-items: flex-end; background: rgba(31,36,48,.42); display: flex; }.date-range-popover { border-bottom: 0; border-radius: 16px 16px 0 0; bottom: 0; left: 0 !important; max-height: min(86vh, 680px); padding: 16px; top: auto !important; width: 100vw; }.date-range-close, .date-preset-list button, .date-range-actions .btn { min-height: 44px; }.date-range-actions .btn { flex: 1; }.date-range-summary { white-space: normal; }
+}
+
+/* Keep the large logo compact when the authentication panels stack. */
+@media (max-width: 991.98px) { .auth-logo-wrap { gap: 8px; margin-bottom: 16px; }.auth-logo { height: auto; width: 112px; } }

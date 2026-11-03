@@ -1,0 +1,25 @@
+/* Phase 19 communication forms and poster preview use shared page, form and table foundations. */
+.communication-page { min-width:0; }
+.gt-communication-form { max-width:900px; padding:24px; margin:20px 0 28px; background:var(--surface,#fff); border:1px solid var(--border,#dce3ea); border-radius:12px; }
+.gt-communication-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:16px; }
+.gt-communication-field { min-width:0; margin-bottom:16px; }
+.gt-communication-field label { display:block; margin-bottom:6px; }
+.gt-communication-field textarea { width:100%; }
+.gt-communication-preview { white-space:pre-wrap; overflow-wrap:anywhere; background:#f5f8fc; border:1px solid #d8e2ef; border-radius:8px; padding:16px; margin:12px 0; }
+.gt-communication-preview p { margin:8px 0 0; }
+.gt-communication-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+#bulkRecipients ul { padding-left:22px; overflow-wrap:anywhere; }
+#bulkRecipients h2, .communication-page > h2 { font-size:1.15rem; margin-top:20px; }
+.poster-art { box-sizing:border-box; width:min(100%,420px); min-height:440px; margin:0 auto; padding:24px; display:flex; flex-direction:column; align-items:center; text-align:center; overflow-wrap:anywhere; color:#153b63; background:linear-gradient(150deg,#f4f9fe,#fff 55%,#fbecef); border:5px solid #174b7b; border-radius:12px; }
+.poster-art img { width:72px; height:72px; object-fit:contain; }
+.poster-art strong { font-size:1.2rem; margin-top:12px; }
+.poster-art small { color:#a6323b; }
+.poster-art h2 { font-size:2rem; line-height:1.1; margin:34px 0 16px; }
+.poster-art p { white-space:pre-wrap; margin:8px 0; }
+.poster-art .poster-prices { font-weight:700; }
+.poster-art footer { margin-top:auto; border-top:1px solid #174b7b; padding-top:14px; width:100%; }
+.poster-instagram { min-height:420px; }
+.poster-facebook { min-height:300px; }
+.poster-print { display:flex; justify-content:center; align-items:flex-start; padding-top:30px; }
+@media (max-width:480px) { .gt-communication-form { padding:16px; } .poster-art { min-height:380px; padding:16px; } .poster-art h2 { font-size:1.5rem; } }
+@media print { .poster-art { print-color-adjust:exact; -webkit-print-color-adjust:exact; break-inside:avoid; } }

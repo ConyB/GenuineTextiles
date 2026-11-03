@@ -1,0 +1,359 @@
+<!doctype html>
+<!-- Dependency-free browser unit checks for shared core and business services. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Core unit tests | Genuine Textiles</title>
+  <style>body{font:15px/1.5 system-ui,sans-serif;margin:32px;max-width:900px}li{margin:6px 0}.pass{color:#1e8e4e}.fail{color:#c62828}</style>
+</head>
+<body>
+  <h1>Core service unit tests</h1>
+  <p id="summary">Running...</p>
+  <ol id="results"></ol>
+
+  <script>/* Historical fixture dates stay deterministic as the real calendar advances. */ if (!new URLSearchParams(location.search).has('today')) history.replaceState(null, '', location.pathname + '?today=2026-10-26');</script>
+
+  <!-- Core load order: vendor, namespace, schema, mock-data, store, format, dates, calc,
+       numbering, settings, session, permissions, navigation, components, modules, app. -->
+  <script src="../assets/vendor/vendor.js"></script>
+  <script src="../assets/js/core/namespace.js"></script>
+  <script src="../assets/js/core/schema.js"></script>
+  <script src="../assets/js/core/format.js"></script>
+  <script src="../assets/js/core/dates.js"></script>
+  <script src="../assets/js/core/calc.js"></script>
+  <script src="../assets/js/core/mock-data.js"></script>
+  <script src="../assets/js/core/store.js"></script>
+  <script src="../assets/js/core/numbering.js"></script>
+  <script src="../assets/js/core/settings.js"></script>
+  <script src="../assets/js/core/session.js"></script>
+  <script src="../assets/js/core/permissions.js"></script>
+  <script src="../assets/js/core/navigation.js"></script>
+  <script src="../assets/js/core/components.js"></script>
+  <script src="../assets/js/core/line-editor.js"></script>
+  <script src="../assets/js/core/print.js"></script>
+  <script src="../assets/js/core/files.js"></script>
+  <script src="../assets/js/core/audit.js"></script>
+  <script src="../assets/js/core/validators.js"></script>
+  <script src="../assets/js/core/cash-book-service.js"></script>
+  <script src="../assets/js/core/customers-service.js"></script>
+  <script src="../assets/js/core/inventory-service.js"></script>
+  <script src="../assets/js/core/materials-service.js"></script>
+  <script src="../assets/js/core/grn-service.js"></script>
+  <script src="../assets/js/core/stock-adjustment-service.js"></script>
+  <script src="../assets/js/core/sales-doc-service.js"></script>
+  <script src="../assets/js/core/invoice-service.js"></script>
+  <script src="../assets/js/core/receipt-service.js"></script>
+  <script src="../assets/js/core/expense-service.js"></script>
+  <script src="../assets/js/core/debtor-service.js"></script>
+  <script src="../assets/js/core/delivery-service.js"></script>
+  <script src="../assets/js/core/order-service.js"></script>
+  <script src="../assets/js/core/material-issue-service.js"></script>
+  <script src="../assets/js/modules/admin-data.js"></script>
+  <script src="../assets/js/core/app.js"></script>
+  <script>
+    (function runTests() {
+      var results = [];
+      function assertEqual(name, actual, expected) {
+        var passed = actual === expected;
+        results.push({ name: name, passed: passed, detail: passed ? '' : 'Expected ' + JSON.stringify(expected) + ', received ' + JSON.stringify(actual) });
+      }
+      function assertThrows(name, callback, expectedText) {
+        var message = '';
+        try { callback(); } catch (error) { message = error.message; }
+        var passed = message.indexOf(expectedText) !== -1;
+        results.push({ name: name, passed: passed, detail: passed ? '' : 'Expected an error containing ' + JSON.stringify(expectedText) + ', received ' + JSON.stringify(message) });
+      }
+
+      GT.store.reset();
+      assertEqual('screen money format', GT.format.formatMoney(9000000), 'UGX 9,000,000');
+      assertEqual('print money format', GT.format.formatMoneyPrint(9000000), '9,000,000/=');
+      assertEqual('amountInWords 10,620,000', GT.format.amountInWords(10620000), 'Ten million six hundred twenty thousand shillings only.');
+      assertEqual('amountInWords 5,416,200', GT.format.amountInWords(5416200), 'Five million four hundred sixteen thousand two hundred shillings only.');
+      assertEqual('document date format', GT.dates.formatDocDate('2026-10-22'), '22 OCT 2026');
+      assertEqual('date range format', GT.dates.formatRange('2026-10-13', '2026-11-07'), '13 Oct – 7 Nov 2026');
+      assertEqual('Monday week start', GT.dates.presetRange('this_week', '2026-11-07').from, '2026-11-02');
+      assertEqual('Sunday week end', GT.dates.presetRange('this_week', '2026-11-07').to, '2026-11-08');
+      assertEqual('last 30 days is inclusive', GT.dates.presetRange('last_30_days', '2026-11-07').from, '2026-10-09');
+
+      var firstTotals = GT.calc.calcTotals([{ quantity: 1, unit_price: 9000000 }], 0, 18);
+      assertEqual('9,000,000 VAT', firstTotals.vat, 1620000);
+      assertEqual('9,000,000 total', firstTotals.total, 10620000);
+      var secondTotals = GT.calc.calcTotals([{ amount: 4590000 }], 0, 18);
+      assertEqual('4,590,000 VAT', secondTotals.vat, 826200);
+      assertEqual('4,590,000 total', secondTotals.total, 5416200);
+      var quote098 = GT.store.where('sales_documents', { type:'quotation', number:'098' })[0];
+      var proforma096 = GT.store.where('sales_documents', { type:'proforma', number:'096' })[0];
+      assertEqual('seed quotation 098 total', quote098.total, 10620000);
+      assertEqual('seed proforma 096 total', proforma096.total, 5416200);
+      assertEqual('quotation 098 line reconciliation', GT.calc.calcTotals(GT.store.where('sales_document_items', { sales_document_id:quote098.id }),0,18).total,quote098.total);
+      assertEqual('proforma 096 line reconciliation', GT.calc.calcTotals(GT.store.where('sales_document_items', { sales_document_id:proforma096.id }),0,18).total,proforma096.total);
+      assertEqual('every seeded sales document reconciles', GT.store.all('sales_documents').every(function (doc) { var lines=GT.store.where('sales_document_items', {sales_document_id:doc.id}); var totals=GT.calc.calcTotals(lines,doc.discount_amount,doc.vat_rate); return totals.subtotal===doc.subtotal && totals.vat===doc.vat_amount && totals.total===doc.total && GT.format.amountInWords(totals.total)===doc.amount_in_words; }), true);
+      assertEqual('quotation expired after validity', GT.salesDocs.effectiveStatus(quote098,'2026-11-06'), 'expired');
+      assertEqual('quotation issued on validity date', GT.salesDocs.effectiveStatus(quote098,'2026-11-05'), 'issued');
+      assertEqual('proforma never expires', GT.salesDocs.effectiveStatus(proforma096,'2027-01-01'), 'issued');
+      assertEqual('Phase 15 expense count',GT.store.count('expenses'),15);
+      assertEqual('Phase 15 next payment voucher',GT.numbering.peek('payment_voucher'),'13');
+      assertEqual('Phase 15 ledger row count',GT.store.count('ledger_entries'),63);
+      assertEqual('Phase 15 pending expenses do not post',GT.store.where('expenses',{status:'pending'}).every(function (row) { return !GT.store.where('ledger_entries',{reference_type:'expense',reference_id:row.id}).length; }),true);
+
+      assertEqual('first invoice number', GT.numbering.next('invoice'), '645');
+      assertEqual('second invoice number', GT.numbering.next('invoice'), '646');
+      assertEqual('padded quotation number', GT.numbering.next('quotation'), '099');
+      assertEqual('required rejects whitespace', GT.validate.required('   '), false);
+      assertEqual('Ugandan phone accepts spaces', GT.validate.ugandanPhone('+256 700 123 456'), true);
+      assertEqual('international phone accepts 8 to 15 digits', GT.validate.internationalPhone('+254700123456'), true);
+      assertEqual('email rejects malformed value', GT.validate.email('wrong@'), false);
+      assertEqual('positive integer rejects zero', GT.validate.positiveInteger(0), false);
+      assertEqual('unique name ignores case', GT.validate.uniqueName('customers', 'pearl dairy farms'), false);
+
+      var seededStockMatches = GT.store.all('materials').every(function (material) {
+        return GT.store.all('locations').every(function (location) {
+          var stock = GT.inventory.getStock(material.id, location.id);
+          var movementSum = GT.store.where('stock_movements', function (row) { return row.item_type === 'material' && row.item_id === material.id && row.location_id === location.id; }).reduce(function (sum, row) { return sum + Number(row.quantity); }, 0);
+          return stock === movementSum;
+        });
+      });
+      assertEqual('seeded stock equals movement sums', seededStockMatches, true);
+      assertEqual('roll quantity format', GT.inventory.formatQuantity({ category:'fabric', unit:'metre', roll_length_m:40 }, 488), '12 rolls + 8 m (488 m)');
+      assertEqual('loose metre quantity format', GT.inventory.formatQuantity({ category:'fabric', unit:'metre', roll_length_m:40 }, 8), '8 m');
+      assertEqual('cone quantity format', GT.inventory.formatQuantity({ category:'yarn', unit:'cone' }, 45), '45 cones');
+
+      GT.session.loginAsRole('owner');
+      var unitDraft=GT.salesDocs.saveDraft('quotation',{customer_id:1,issue_date:'2026-10-22',valid_until:'2026-11-05',items:[{description:'Raincoats',size:'All',quantity:200,unit:'pcs',unit_price:45000}],discount_amount:0});
+      assertEqual('draft has no number',unitDraft.number,null);
+      assertEqual('number unchanged until issue',GT.numbering.peek('quotation'),'100');
+      assertThrows('discount above subtotal is refused',function () { GT.salesDocs.build('quotation',{customer_id:1,issue_date:'2026-10-22',valid_until:'2026-11-05',items:[{description:'Raincoats',quantity:1,unit:'pcs',unit_price:100}],discount_amount:101,discount_reason:'Test'}); },'Correct');
+      var boundaryMaterial = GT.store.create('materials', { name:'Unit Boundary Material', category:'thread', subtype:'', unit:'cone', colour:'White', fabric_type:'', width_inches:null, supplier_id:1, cost_per_unit:1, full_stock_level:100, roll_length_m:null, notes:'', active:true });
+      assertEqual('zero stock is out', GT.inventory.status(boundaryMaterial), 'out');
+      var firstMovement = GT.inventory.recordMovement({ materialId:boundaryMaterial.id, locationId:1, type:'opening', quantity:25, note:'Unit test opening' });
+      assertEqual('movement records before quantity', firstMovement.before_qty, 0);
+      assertEqual('movement records after quantity', firstMovement.after_qty, 25);
+      assertEqual('exactly 25 percent is low', GT.inventory.status(boundaryMaterial), 'low');
+      GT.inventory.recordMovement({ materialId:boundaryMaterial.id, locationId:1, type:'grn', quantity:1, note:'Unit test receipt' });
+      assertEqual('just above 25 percent is ok', GT.inventory.status(boundaryMaterial), 'ok');
+      assertThrows('movement refuses negative stock', function () { GT.inventory.recordMovement({ materialId:boundaryMaterial.id, locationId:1, type:'issue', quantity:-27 }); }, 'below zero');
+      assertEqual('refused movement leaves stock unchanged', GT.inventory.getStock(boundaryMaterial.id, 1), 26);
+      var unitMovementSum = GT.store.where('stock_movements', function (row) { return row.item_id === boundaryMaterial.id && row.location_id === 1; }).reduce(function (sum, row) { return sum + Number(row.quantity); }, 0);
+      assertEqual('recorded movement sum equals stock', unitMovementSum, GT.inventory.getStock(boundaryMaterial.id, 1));
+      assertEqual('material picker excludes inactive records', GT.materials.options().some(function (option) { return GT.store.find('materials', option.value).active === false; }), false);
+      assertThrows('inactive material rejects non-adjustment movement', function () { GT.inventory.recordMovement({ materialId:39, locationId:1, type:'grn', quantity:1 }); }, 'Inactive materials');
+      assertThrows('compressed photo limit rejects oversized data', function () { GT.files.ensureWithinLimit('data:image/jpeg;base64,' + 'A'.repeat(Math.ceil((GT.files.MAX_BYTES + 1) * 4 / 3))); }, 'larger than 300 KB');
+      assertEqual('GRN accepted quantity subtracts rejected quantity', GT.grns.accepted({ quantity_received:12, quantity_rejected:2 }), 10);
+      assertEqual('GRN rolls convert to base metres', GT.grns.toBaseQuantity({ roll_length_m:40 }, 2, 'roll'), 80);
+      assertEqual('adjustment refuses decrease above current stock', GT.adjustments.validate({ material_id:boundaryMaterial.id, location_id:1, direction:'decrease', quantity:27, reason:'lost', note:'Unit test stock loss' }).quantity, 'A decrease cannot be larger than current stock.');
+
+      var invoice640=GT.store.where('sales_documents',{type:'invoice',number:'640'})[0];
+      var invoice641=GT.store.where('sales_documents',{type:'invoice',number:'641'})[0];
+      assertEqual('invoice 640 total',invoice640.total,21240000);
+      assertEqual('invoice 641 total',invoice641.total,5416200);
+      assertEqual('invoice 641 deposit',GT.invoices.summary(invoice641.id).paid,2708100);
+      assertEqual('invoice 641 is part paid',GT.invoices.summary(invoice641.id).paymentStatus,'part_paid');
+      assertEqual('invoice 640 is unpaid',GT.invoices.summary(invoice640.id).paymentStatus,'unpaid');
+      assertEqual('invoice 615 is paid',GT.invoices.summary(GT.store.where('sales_documents',{type:'invoice',number:'615'})[0].id).paymentStatus,'paid');
+      assertEqual('void invoice has no payment status',GT.invoices.summary(GT.store.where('sales_documents',{type:'invoice',number:'644'})[0].id).paymentStatus,null);
+      assertEqual('draft invoice has no payment status',GT.invoices.summary(GT.store.where('sales_documents',{type:'invoice',status:'draft'})[0].id).paymentStatus,null);
+      assertEqual('30 day due date',GT.invoices.dueDate('2026-09-01',{is_credit:true,credit_days:30}),'2026-10-01');
+      assertEqual('45 day due date',GT.invoices.dueDate('2026-09-01',{is_credit:true,credit_days:45}),'2026-10-16');
+      assertEqual('due date boundary is not overdue',GT.invoices.isOverdue('2026-10-01',100,'2026-10-01'),false);
+      assertEqual('day after due is overdue',GT.invoices.isOverdue('2026-10-01',100,'2026-10-02'),true);
+      assertEqual('zero balance is never overdue',GT.invoices.isOverdue('2026-10-01',0,'2026-10-02'),false);
+      assertEqual('13 debtor customers',GT.store.all('customers').filter(function (customer) { return GT.customers.balance(customer.id)>0; }).length,13);
+      assertEqual('at least two credit accounts over limit',GT.store.all('customers').filter(function (customer) { return customer.is_credit && GT.customers.balance(customer.id)>customer.credit_limit; }).length>=2,true);
+      var debtBuckets={'0–30':0,'31–60':0,'61+':0};
+      GT.store.all('customers').forEach(function (customer) { var unpaid=GT.store.where('sales_documents',function (doc) { return doc.type==='invoice'&&doc.status==='issued'&&doc.customer_id===customer.id&&GT.invoices.summary(doc.id,'2026-10-26').balance>0; }); if (unpaid.length) { var oldest=Math.max.apply(null,unpaid.map(function (doc) { return GT.invoices.summary(doc.id,'2026-10-26').ageDays; })); debtBuckets[GT.invoices.ageBucket(oldest)]++; } });
+      assertEqual('debtors 0–30',debtBuckets['0–30'],5);
+      assertEqual('debtors 31–60',debtBuckets['31–60'],4);
+      assertEqual('debtors 61+',debtBuckets['61+'],4);
+      assertEqual('52 seeded receipts including quick sales',GT.store.count('receipts'),52);
+      assertEqual('receipt 2073 seeded',GT.store.where('receipts',{number:'2073'}).length,1);
+      assertEqual('receipt next 2081',GT.numbering.peek('receipt'),'2081');
+      assertEqual('all active receipt totals reconcile',GT.store.all('sales_documents').filter(function (doc) { return doc.type==='invoice'; }).every(function (doc) { var paid=GT.receipts.listForInvoice(doc.id).filter(function (row) { return row.status!=='void'; }).reduce(function (sum,row) { return sum+row.amount; },0); return paid<=doc.total && GT.invoices.summary(doc.id).paid===paid; }),true);
+      function expectedSeedPaid(doc) { return doc.status==='void'||doc.number==='640'||doc.number==='633'?0:doc.customer_id<=13?Math.floor(doc.total/2):doc.total; }
+      var numberedInvoices=GT.store.where('sales_documents',function (doc) { return doc.type==='invoice'&&doc.number; });
+      assertEqual('every invoice paid total matches Phase 8 seed',numberedInvoices.every(function (doc) { return GT.invoices.summary(doc.id).paid===expectedSeedPaid(doc); }),true);
+      assertEqual('every customer balance matches Phase 8 seed',GT.store.all('customers').every(function (customer) { var expected=numberedInvoices.filter(function (doc) { return doc.customer_id===customer.id&&doc.status==='issued'; }).reduce(function (sum,doc) { return sum+doc.total-expectedSeedPaid(doc); },0); return GT.customers.balance(customer.id)===expected; }),true);
+      assertEqual('unchanged paid invoice count',numberedInvoices.filter(function (doc) { return GT.invoices.summary(doc.id).paymentStatus==='paid'; }).length,16);
+      assertEqual('unchanged part-paid invoice count',numberedInvoices.filter(function (doc) { return GT.invoices.summary(doc.id).paymentStatus==='part_paid'; }).length,11);
+      assertEqual('two historical receipts are void',GT.store.where('receipts',{status:'void'}).length,2);
+      assertEqual('corrected invoices still paid',GT.invoices.summary(GT.store.where('sales_documents',{type:'invoice',number:'615'})[0].id).paymentStatus,'paid');
+      assertEqual('receipt deposit description',GT.receipts.defaultDescription(invoice640,100),'Deposit on invoice 640');
+      assertEqual('receipt balance description',GT.receipts.defaultDescription(invoice640,invoice640.total),'Balance of invoice 640');
+      assertEqual('receipt part description',GT.receipts.defaultDescription(invoice641,100),'Part payment on invoice 641');
+      function receiptValues(changes) { return Object.assign({invoice_id:invoice640.id,customer_id:invoice640.customer_id,amount:100,received_at:'2026-10-26',payment_method:'cash',reference:''},changes||{}); }
+      assertEqual('receipt zero refused',!!GT.receipts.validate(receiptValues({amount:0})).amount,true);
+      assertEqual('receipt overpayment refused',!!GT.receipts.validate(receiptValues({amount:invoice640.total+1})).amount,true);
+      assertEqual('receipt date before invoice refused',!!GT.receipts.validate(receiptValues({received_at:'2026-04-27'})).received_at,true);
+      assertEqual('receipt future date refused',!!GT.receipts.validate(receiptValues({received_at:'2026-10-27'})).received_at,true);
+      assertEqual('MTN reference required',!!GT.receipts.validate(receiptValues({payment_method:'mtn'})).reference,true);
+      assertEqual('Airtel reference required',!!GT.receipts.validate(receiptValues({payment_method:'airtel'})).reference,true);
+      assertEqual('bank reference required',!!GT.receipts.validate(receiptValues({payment_method:'bank'})).reference,true);
+      assertEqual('cheque digits required',!!GT.receipts.validate(receiptValues({payment_method:'cheque',reference:'ABC'})).reference,true);
+      assertEqual('cash needs no reference',!!GT.receipts.validate(receiptValues({payment_method:'cash'})).reference,false);
+      var existingReference=GT.store.where('receipts',function (row) { return row.payment_method==='mtn'&&row.status==='issued'; })[0];
+      assertEqual('duplicate Mobile Money ID refused',!!GT.receipts.validate(receiptValues({payment_method:'mtn',reference:existingReference.reference})).reference,true);
+      var balanceBefore=GT.customers.balance(invoice640.customer_id);
+      var issued=GT.receipts.save(receiptValues({amount:1000}));
+      assertEqual('receipt next number 2081',issued.number,'2081');
+      assertEqual('receipt following number 2082',GT.numbering.peek('receipt'),'2082');
+      assertEqual('receipt balance after',issued.balance_after,invoice640.total-1000);
+      assertEqual('invoice becomes part paid',GT.invoices.summary(invoice640.id).paymentStatus,'part_paid');
+      assertEqual('customer balance falls',GT.customers.balance(invoice640.customer_id),balanceBefore-1000);
+      var settled=GT.receipts.save(receiptValues({amount:invoice640.total-1000,description:''}));
+      assertEqual('invoice becomes paid',GT.invoices.summary(invoice640.id).paymentStatus,'paid');
+      GT.receipts.voidReceipt(settled.id,'Unit correction');
+      assertEqual('invoice returns to part paid',GT.invoices.summary(invoice640.id).paymentStatus,'part_paid');
+      assertEqual('other historical balance remains',GT.store.find('receipts',issued.id).balance_after,issued.balance_after);
+      GT.receipts.voidReceipt(issued.id,'Unit correction');
+      assertEqual('invoice returns to unpaid',GT.invoices.summary(invoice640.id).paymentStatus,'unpaid');
+      assertEqual('customer balance restored',GT.customers.balance(invoice640.customer_id),balanceBefore);
+      assertEqual('customer balance excludes voids',GT.customers.balance(21),0);
+      assertEqual('credit just under limit is allowed',GT.invoices.creditCheck(3,GT.store.find('customers',3).credit_limit-GT.customers.balance(3)-1).exceedsLimit,false);
+      assertEqual('credit equal limit is allowed',GT.invoices.creditCheck(3,GT.store.find('customers',3).credit_limit-GT.customers.balance(3)).exceedsLimit,false);
+      assertEqual('credit over limit is warned',GT.invoices.creditCheck(3,GT.store.find('customers',3).credit_limit-GT.customers.balance(3)+1).exceedsLimit,true);
+      var debtorRows=GT.debtors.list('2026-10-26');
+      assertEqual('Phase 10 has 13 debtors',debtorRows.length,13);
+      assertEqual('debtor balances use customer service',debtorRows.every(function (row) { return row.balance===GT.customers.balance(row.id); }),true);
+      assertEqual('debtor oldest ages split 5/4/4',JSON.stringify(['b0_30','b31_60','b61_plus'].map(function (key) { return debtorRows.filter(function (row) { return GT.debtors.bucket(row.oldest_age)===key; }).length; })),JSON.stringify([5,4,4]));
+      assertEqual('age bucket day 30',GT.debtors.bucket(30),'b0_30');
+      assertEqual('age bucket day 31',GT.debtors.bucket(31),'b31_60');
+      assertEqual('age bucket day 60',GT.debtors.bucket(60),'b31_60');
+      assertEqual('age bucket day 61',GT.debtors.bucket(61),'b61_plus');
+      assertEqual('recent-only debtor in 0-30',debtorRows.filter(function (row) { return row.oldest_age<=30; }).every(function (row) { return row.b0_30>0; }),true);
+      assertEqual('ageing sum agrees with debtor balances',GT.debtors.ageingTotals('2026-10-26').total,debtorRows.reduce(function (sum,row) { return sum+row.balance; },0));
+      assertEqual('SMS 160 is one segment',GT.debtors.smsSegments('x'.repeat(160)),1);
+      assertEqual('SMS 161 is two segments',GT.debtors.smsSegments('x'.repeat(161)),2);
+      assertEqual('SMS 306 is two segments',GT.debtors.smsSegments('x'.repeat(306)),2);
+      assertEqual('SMS 307 is three segments',GT.debtors.smsSegments('x'.repeat(307)),3);
+      assertEqual('reminder placeholders are filled',/\{\{?/.test(GT.debtors.reminderText(1)),false);
+      assertEqual('accountant spacing gate',GT.debtors.recentElectronic(1,'2026-10-26')!==null,true);
+      assertEqual('pending promise',GT.debtors.promiseStatus(1,'2026-10-26').status,'pending');
+      assertEqual('missed promise',GT.debtors.promiseStatus(2,'2026-10-26').status,'missed');
+      assertEqual('no promise',GT.debtors.promiseStatus(8,'2026-10-26').status,'none');
+      var lateInvoice=GT.store.create('sales_documents',{type:'invoice',customer_id:2,status:'issued',total:900000,issue_date:'2026-10-22'});
+      assertEqual('new invoice does not change missed promise',GT.debtors.promiseStatus(2,'2026-10-26').status,'missed');
+      var promisePayment=GT.store.create('receipts',{customer_id:2,invoice_id:lateInvoice.id,amount:500000,status:'issued',received_at:'2026-10-21T11:00:00+03:00'});
+      assertEqual('receipt after reminder keeps promise',GT.debtors.promiseStatus(2,'2026-10-26').status,'kept');
+      GT.store.update('receipts',promisePayment.id,{status:'void'});
+      assertEqual('void receipt does not keep promise',GT.debtors.promiseStatus(2,'2026-10-26').status,'missed');
+      GT.store.update('sales_documents',lateInvoice.id,{status:'void'});
+      GT.store.reset(); GT.session.loginAsRole('owner');
+      var seededNotes=GT.store.all('delivery_notes');
+      assertEqual('Phase 11 seed has ten numbered notes',seededNotes.filter(function (row) { return row.number!==null; }).length,10);
+      assertEqual('Phase 11 seed includes one unnumbered draft',seededNotes.filter(function (row) { return row.status==='draft' && row.number===null; }).length,1);
+      assertEqual('Phase 11 numbered range',seededNotes.filter(function (row) { return row.number!==null; }).map(function (row) { return Number(row.number); }).sort(function (a,b) { return a-b; }).join(','),'2046,2047,2048,2049,2050,2051,2052,2053,2054,2055');
+      assertEqual('at least three invoices have no dispatch',GT.store.all('sales_documents').filter(function (row) { return row.type==='invoice' && row.status==='issued' && GT.deliveries.summary(row.id).status==='not_delivered'; }).length>=3,true);
+      assertEqual('cash invoice with balance needs release',GT.deliveries.releaseCheck(GT.store.all('sales_documents').find(function (row) { return row.number==='642'; }).id).status,'needs_approval');
+      assertThrows('future planned draft cannot issue',function () { GT.deliveries.issue(11); },'date');
+      var deliveryInvoice=GT.store.all('sales_documents').find(function (row) { return row.number==='635'; });
+      var deliverySource=GT.salesDocs.items(deliveryInvoice.id)[0];
+      assertEqual('paid invoice release cleared',GT.deliveries.releaseCheck(deliveryInvoice.id).status,'cleared');
+      var firstDelivery=GT.deliveries.createDraft(deliveryInvoice.id);
+      assertEqual('delivery draft has no number',firstDelivery.number,null);
+      GT.deliveries.saveDraft(firstDelivery.id,{delivery_method:'delivered_by_us',lines:[{sales_document_item_id:deliverySource.id,qty_dispatched:deliverySource.quantity/2}]});
+      assertEqual('draft print balance includes proposed dispatch',GT.deliveries.remainingAfter(firstDelivery,deliverySource.id,deliverySource.quantity/2),deliverySource.quantity/2);
+      firstDelivery=GT.deliveries.issue(firstDelivery.id);
+      assertEqual('first issued delivery number',firstDelivery.number,'2056');
+      assertEqual('partial delivery state',GT.deliveries.summary(deliveryInvoice.id).status,'part_delivered');
+      var secondDelivery=GT.deliveries.createDraft(deliveryInvoice.id);
+      GT.deliveries.saveDraft(secondDelivery.id,{delivery_method:'courier'});
+      assertThrows('over-dispatch refused',function () { GT.deliveries.saveDraft(secondDelivery.id,{lines:[{sales_document_item_id:deliverySource.id,qty_dispatched:deliverySource.quantity}]}); },'remaining');
+      secondDelivery=GT.deliveries.issue(secondDelivery.id);
+      assertEqual('full delivery state',GT.deliveries.summary(deliveryInvoice.id).status,'delivered');
+      assertEqual('first print balance stays at first dispatch',GT.deliveries.remainingAfter(firstDelivery,deliverySource.id,deliverySource.quantity/2),deliverySource.quantity/2);
+      assertThrows('void reason required',function () { GT.deliveries.void(secondDelivery.id,''); },'reason');
+      GT.deliveries.void(secondDelivery.id,'Courier assignment cancelled');
+      assertEqual('void releases quantity',GT.deliveries.summary(deliveryInvoice.id).status,'part_delivered');
+      var firstLine=GT.deliveries.noteLines(firstDelivery.id)[0];
+      GT.deliveries.confirm(firstDelivery.id,{received_by:'Customer receiver',received_date:'2026-10-26',lines:[{delivery_note_item_id:firstLine.id,qty_received:firstLine.qty_dispatched-1,return_reason:'damaged'}]});
+      assertEqual('return raises remaining',GT.deliveries.summary(deliveryInvoice.id).lines[0].remaining,deliverySource.quantity/2+1);
+      assertThrows('confirmed note cannot be voided',function () { GT.deliveries.void(firstDelivery.id,'Complaint'); },'unconfirmed');
+      assertEqual('statement totals match lines',GT.store.all('statements').every(function (row) { return row.total_due===row.lines_json.reduce(function (sum,line) { return sum+line.amount_due; },0); }),true);
+      assertEqual('overdue count matches debtor rows',GT.debtors.overdueDebtorCount('2026-10-26'),debtorRows.filter(function (row) { return row.overdue_amount>0; }).length);
+      var converted=GT.invoices.convertFrom(quote098.id);
+      assertEqual('conversion remains draft',converted.status,'draft');
+      assertEqual('conversion copies total',converted.total,quote098.total);
+      assertEqual('conversion copies lines',GT.salesDocs.items(converted.id).length,GT.salesDocs.items(quote098.id).length);
+      assertThrows('second active conversion refused',function () { GT.invoices.convertFrom(quote098.id); },'active invoice');
+
+      GT.store.reset(); GT.session.loginAsRole('owner');
+      assertEqual('Phase 12 has twelve orders',GT.store.count('orders'),12);
+      assertEqual('Phase 12 uses seven settings stages',GT.orders.stages().length,7);
+      assertEqual('Phase 12 numbered orders',GT.store.all('orders').filter(function (item) { return !!item.number; }).length,11);
+      assertEqual('Phase 12 next order number',GT.numbering.peek('order'),'12');
+      assertEqual('two seeded late orders',GT.orders.lateCount(),2);
+      assertEqual('seed completed orders derive from delivery',GT.store.where('orders',{status:'completed'}).every(function (item) { return GT.orders.summary(item.id).deliveryStatus==='delivered'; }),true);
+      var orderFromQuote=GT.orders.createFromDocument(4);
+      assertEqual('source conversion remains draft',orderFromQuote.status,'draft');
+      assertEqual('source lines copied',GT.orders.lines(orderFromQuote.id).length,GT.salesDocs.items(4).length);
+      var numberedOrder=GT.orders.confirm(orderFromQuote.id);
+      assertEqual('confirm consumes number',numberedOrder.number,'12');
+      var orderInvoice=GT.orders.createInvoice(numberedOrder.id);
+      assertEqual('order links invoice',GT.store.find('orders',numberedOrder.id).invoice_id,orderInvoice.id);
+      assertEqual('invoice links order',orderInvoice.order_id,numberedOrder.id);
+      assertThrows('Delivered cannot be set by hand',function () { GT.orders.moveStage(numberedOrder.id,'Delivered','Manual'); },'different production stage');
+      var pendingOrder=GT.store.find('orders',9);
+      assertEqual('seed approval is pending',GT.orders.approvalFor(pendingOrder.id,'requested').target_stage,'Cutting');
+      assertThrows('deposit blocks production',function () { GT.orders.moveStage(pendingOrder.id,'Cutting','Skipping stage'); },'Deposit approval');
+      GT.orders.rejectStage(pendingOrder.id,'Wait for deposit');
+      assertEqual('rejection keeps stage',GT.store.find('orders',pendingOrder.id).current_stage,'Received');
+      GT.session.loginAsRole('workshop_supervisor');
+      GT.orders.requestStageApproval(pendingOrder.id,'Cutting','Materials are ready');
+      GT.session.loginAsRole('general_manager');
+      GT.orders.approveStage(pendingOrder.id,'Production authorised');
+      assertEqual('manager approval moves stage',GT.store.find('orders',pendingOrder.id).current_stage,'Cutting');
+      assertThrows('cancellation blocked after Cutting',function () { GT.orders.cancel(pendingOrder.id,'Customer request'); },'after Cutting');
+      assertThrows('backward move needs note',function () { GT.orders.moveStage(pendingOrder.id,'Received',''); },'note');
+      GT.orders.moveStage(pendingOrder.id,'Received','Correction to stage record');
+      assertEqual('stage move appends history',GT.store.where('order_stage_history',{order_id:pendingOrder.id}).length>=3,true);
+
+      GT.store.reset(); GT.session.loginAsRole('owner');
+      assertEqual('Phase 13 has eight material issues',GT.store.count('material_issues'),8);
+      assertEqual('Phase 13 seed stock matches movement ledger',GT.store.all('material_stock').every(function (stock) {
+        var net=GT.store.where('stock_movements',function (movement) { return movement.item_type==='material' && movement.item_id===stock.material_id && movement.location_id===stock.location_id; })
+          .reduce(function (sum,movement) { return sum+Number(movement.quantity); },0);
+        return net===Number(stock.quantity) && net>=0;
+      }),true);
+      assertEqual('next material issue number',GT.numbering.peek('material_issue'),'7');
+      assertEqual('one pending issue badge',GT.materialIssues.pendingCount(),1);
+      var issueBalance=GT.inventory.getStock(9,1);
+      GT.session.loginAsRole('workshop_supervisor');
+      var request=GT.materialIssues.createRequest({order_id:3,location_id:1,lines:[{material_id:9,quantity:2,note:'Cutting'}]});
+      assertEqual('request has no number',request.number,null);
+      assertEqual('request does not alter stock',GT.inventory.getStock(9,1),issueBalance);
+      assertThrows('supervisor cannot issue',function () { GT.materialIssues.issue(request.id); },'issuer');
+      GT.session.loginAsRole('store_keeper');
+      var posted=GT.materialIssues.issue(request.id);
+      assertEqual('issue receives number',posted.number,'7');
+      assertEqual('issue reduces stock',GT.inventory.getStock(9,1),issueBalance-2);
+      assertEqual('issue leaves order stage',GT.store.find('orders',3).current_stage,'Sewing');
+      GT.materialIssues.recordReturn(posted.id,[{item_id:GT.materialIssues.lines(posted.id)[0].id,quantity:1}]);
+      assertEqual('return raises stock',GT.inventory.getStock(9,1),issueBalance-1);
+      assertThrows('excess return refused',function () { GT.materialIssues.recordReturn(posted.id,[{item_id:GT.materialIssues.lines(posted.id)[0].id,quantity:2}]); },'exceeds');
+      GT.session.loginAsRole('owner');
+      assertThrows('void after return refused',function () { GT.materialIssues.void(posted.id,'Correction'); },'return');
+      var over=GT.materialIssues.createRequest({order_id:4,location_id:1,lines:[{material_id:9,quantity:issueBalance+100}]});
+      assertThrows('over-stock issue refused',function () { GT.materialIssues.issue(over.id); },'below zero');
+      assertEqual('failed issue does not consume number',GT.numbering.peek('material_issue'),'8');
+      assertThrows('completed order cannot request material',function () { GT.materialIssues.createRequest({order_id:1,location_id:1,lines:[{material_id:9,quantity:1}]}); },'active order');
+      GT.materialIssues.reject(over.id,'Insufficient stock');
+      assertEqual('rejection leaves balance',GT.inventory.getStock(9,1),issueBalance-1);
+
+      var list = document.getElementById('results');
+      results.forEach(function (result) {
+        var item = document.createElement('li');
+        item.className = result.passed ? 'pass' : 'fail';
+        item.textContent = (result.passed ? 'PASS: ' : 'FAIL: ') + result.name + (result.detail ? ' — ' + result.detail : '');
+        list.appendChild(item);
+      });
+      var failures = results.filter(function (result) { return !result.passed; });
+      var summary = document.getElementById('summary');
+      summary.dataset.status = failures.length ? 'fail' : 'pass';
+      summary.className = failures.length ? 'fail' : 'pass';
+      summary.textContent = failures.length ? failures.length + ' test(s) failed.' : results.length + ' tests passed.';
+      window.UNIT_TEST_RESULTS = results;
+      GT.store.reset();
+    }());
+  </script>
+</body>
+</html>

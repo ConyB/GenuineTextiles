@@ -1,0 +1,7 @@
+/* Phase 17 page spacing uses the shared card, form, and table components. */
+.people-period { max-width: 240px; margin-bottom: 16px; }
+.people-finalise { border-top: 1px solid var(--border, #dde0ea); display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-top: 20px; padding-top: 16px; }
+.people-finalise .form-label { width: 100%; margin-bottom: -8px; }
+.people-finalise .people-period { margin-bottom: 0; }
+.people-print-table th:nth-child(n+3), .people-print-table td:nth-child(n+3) { text-align: right; }
+@media (max-width: 575px) { .people-period, .people-finalise .people-period, .people-finalise .btn { max-width: none; width: 100%; } }
